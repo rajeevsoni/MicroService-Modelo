@@ -5,5 +5,9 @@
     <RootNamespace>MicroService_Modelo</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="prometheus-net.AspNetCore" Version="3.6.0" />
+  </ItemGroup>
+
 
 </Project>

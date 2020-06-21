@@ -23,8 +23,8 @@ namespace MicroService_Modelo.Controllers
         {
             _logger.LogInformation("Executing Health Endpoint");
             var response = await _dummyService.GetHealthData();
-            _logger.LogInformation("Executed Successfully");
-            new OkObjectResult(response);
+            _logger.LogInformation("");
+            return new OkObjectResult(response);
         }
     }
 }

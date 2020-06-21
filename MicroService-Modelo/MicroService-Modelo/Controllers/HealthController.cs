@@ -24,7 +24,7 @@ namespace MicroService_Modelo.Controllers
             _logger.LogInformation("Executing Health Endpoint");
             var response = await _dummyService.GetHealthData();
             _logger.LogInformation("Executed Successfully");
-            return new OkObjectResult(response);
+            new OkObjectResult(response);
         }
     }
 }

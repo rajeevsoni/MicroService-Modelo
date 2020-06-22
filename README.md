@@ -10,6 +10,7 @@ Common features to be implemented for basic Rest API template:
 4. Circuit breaker using polly with httpclent.
 5. API Rate Limiting.
 6. Centralized Logging.(ELK stack or Graylog).
+7. Swagger Documentation
 
 For set of microservices we also need to have API gateway with service discovery mechanism.
 1. API Gateway with Ocelot

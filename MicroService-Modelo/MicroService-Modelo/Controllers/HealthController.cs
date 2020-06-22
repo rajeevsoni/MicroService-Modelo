@@ -1,4 +1,5 @@
 ﻿using MicroService_Modelo.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 namespace MicroService_Modelo.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class HealthController : ControllerBase
     {
         private IHealthService _dummyService;
@@ -19,11 +20,18 @@ namespace MicroService_Modelo.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetServiceHealth()
         {
             _logger.LogInformation("Executing Health Endpoint");
             var response = await _dummyService.GetHealthData();
-            _logger.LogInformation("");
+            return new OkObjectResult(response);
+        }
+
+        [HttpGet("Internet")]
+        public async Task<IActionResult> GetInternetConnectivityHealth()
+        {
+            _logger.LogInformation("Executing Internet Health Endpoint");
+            var response = await _dummyService.GetHealthData();
             return new OkObjectResult(response);
         }
     }

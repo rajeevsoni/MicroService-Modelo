@@ -1,16 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MicroService_Modelo.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Prometheus;
+using System;
+using System.Text;
 
 namespace MicroService_Modelo
 {
@@ -29,6 +28,30 @@ namespace MicroService_Modelo
             services.AddControllers();
 
             services.AddTransient<IHealthService, HealthService>();
+
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtToken:Secret"]));
+            var clockSkew = TimeSpan.FromSeconds(Configuration.GetValue<int>("JwtToken:ClockSkew"));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(cfg =>
+                {
+                    cfg.RequireHttpsMetadata = false;
+                    cfg.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        IssuerSigningKey = signingKey,
+                        ClockSkew = clockSkew,
+                        ValidateIssuerSigningKey = true,
+                        ValidateAudience = false,
+                        ValidateIssuer = false,
+                    };
+                });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1.0", new OpenApiInfo { Title = "MicroService-Modelo", Version = "v1.0" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme() { In = ParameterLocation.Header, Description = "Please insert ApiKey with Bearer into field", Name = "Authorization", Type = SecuritySchemeType.ApiKey });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +67,14 @@ namespace MicroService_Modelo
             app.UseHttpMetrics();
 
             app.UseAuthorization();
+
+            app.UseAuthentication();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "MicroService-Modelo");
+            });
 
             app.UseEndpoints(endpoints =>
             {

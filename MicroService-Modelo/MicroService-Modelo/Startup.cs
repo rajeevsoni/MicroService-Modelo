@@ -8,8 +8,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Prometheus;
+using Polly;
 using System;
 using System.Text;
+using MicroService_Modelo.CrossCuttings;
 
 namespace MicroService_Modelo
 {
@@ -45,6 +47,9 @@ namespace MicroService_Modelo
                         ValidateIssuer = false,
                     };
                 });
+
+            services.AddHttpClient(HttpClientName.GoogleAPI, c => c.BaseAddress = new Uri(HttpClientURI.GoogleAPI))
+                .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(2, TimeSpan.FromMinutes(2)));
 
             services.AddSwaggerGen(c =>
             {

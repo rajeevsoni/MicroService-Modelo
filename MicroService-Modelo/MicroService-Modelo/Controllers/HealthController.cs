@@ -23,7 +23,7 @@ namespace MicroService_Modelo.Controllers
         public async Task<IActionResult> GetServiceHealth()
         {
             _logger.LogInformation("Executing Health Endpoint");
-            var response = await _dummyService.GetHealthData();
+            var response = await _dummyService.GetHealthCheckData();
             return new OkObjectResult(response);
         }
 
@@ -31,7 +31,7 @@ namespace MicroService_Modelo.Controllers
         public async Task<IActionResult> GetInternetConnectivityHealth()
         {
             _logger.LogInformation("Executing Internet Health Endpoint");
-            var response = await _dummyService.GetHealthData();
+            var response = await _dummyService.GetInternetHealthCheckData();
             return new OkObjectResult(response);
         }
     }

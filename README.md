@@ -8,7 +8,7 @@ Common features to be implemented for basic Rest API template:
 2. Authentication using JWT. :heavy_check_mark:
 3. Prometheus for metrics. :heavy_check_mark:
 4. Swagger Documentation. :heavy_check_mark:
-5. Circuit breaker using polly with httpclent.
+5. Circuit breaker using polly with httpclient.
 6. API Rate Limiting.
 7. Centralized Logging.(ELK stack or Graylog).
 8. Grafana integration. 

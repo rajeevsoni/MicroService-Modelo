@@ -4,6 +4,7 @@ namespace MicroService_Modelo.Services
 {
     public interface IHealthService
     {
-        Task<string> GetHealthData();
+        Task<string> GetHealthCheckData();
+        Task<string> GetInternetHealthCheckData();
     }
 }

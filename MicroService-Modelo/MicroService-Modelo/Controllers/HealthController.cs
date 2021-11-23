@@ -10,8 +10,8 @@ namespace MicroService_Modelo.Controllers
     [Route("api/[controller]")]
     public class HealthController : ControllerBase
     {
-        private IHealthService _dummyService;
-        private ILogger<HealthController> _logger;
+        private readonly IHealthService _dummyService;
+        private readonly ILogger<HealthController> _logger;
 
         public HealthController(IHealthService dummyService, ILogger<HealthController> logger)
         {
